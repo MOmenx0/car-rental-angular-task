@@ -1,0 +1,64 @@
+<div class="app-shell min-h-screen p-2 md:p-4 font-body">
+  <header class="sticky top-2 z-40">
+    <div class="app-header-panel max-w-[1250px] mx-auto rounded-2xl px-3 py-3 md:px-5 md:py-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <nav *ngIf="isAuthed()" class="flex flex-wrap items-center gap-2">
+          <a
+            *ngFor="let link of navLinks()"
+            [routerLink]="link.link"
+            routerLinkActive="active-nav"
+            class="nav-link"
+          >
+            {{ link.label | translate }}
+          </a>
+        </nav>
+
+        <div class="ms-auto flex items-center flex-wrap gap-2">
+          <button
+            pButton
+            type="button"
+            [text]="true"
+            [rounded]="true"
+            class="header-icon-button"
+            (click)="toggleLanguage()"
+            [attr.aria-label]="uiLang.language() === 'en' ? 'Switch to Arabic' : 'Switch to English'"
+            [attr.title]="uiLang.language() === 'en' ? 'Arabic' : 'English'"
+          >
+            <i class="pi pi-language"></i>
+            <span class="lang-pill">{{ currentLanguageLabel() }}</span>
+          </button>
+
+          <button
+            pButton
+            type="button"
+            [text]="true"
+            [rounded]="true"
+            class="header-icon-button"
+            (click)="toggleTheme()"
+            [attr.aria-label]="theme.isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
+          >
+            <i [class]="themeIcon()"></i>
+          </button>
+
+          <button
+            *ngIf="isAuthed()"
+            pButton
+            type="button"
+            severity="danger"
+            size="small"
+            class="logout-button"
+            (click)="logout()"
+            [label]="'auth.logout' | translate"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1250px] mx-auto mt-3 md:mt-4">
+    <router-outlet />
+  </main>
+</div>
+
+<p-toast></p-toast>
+<p-confirmdialog></p-confirmdialog>

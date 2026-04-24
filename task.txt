@@ -1,0 +1,273 @@
+You are a senior Angular engineer. Your task is to implement EXACTLY the requirements provided below with ZERO assumptions, ZERO additions, and ZERO missing parts.
+
+STRICT RULES:
+
+* Do NOT add any feature not explicitly mentioned.
+* Do NOT skip any requirement.
+* Do NOT simplify any logic.
+* If anything is unclear, STOP and ask before proceeding.
+* Follow the API and requirements EXACTLY as written.
+* All features must match the specification word-for-word.
+* Respect roles, permissions, and flows exactly.
+* Implement full error handling, loading states, and empty states everywhere required.
+* Use clean, scalable Angular architecture.
+
+---
+
+PROJECT: Car Rental System (Angular Frontend)
+API BASE URL:
+https://task.abudiyab-soft.com/api
+
+AUTH:
+Use Bearer Token in all protected requests:
+Authorization: Bearer <token>
+
+TEST ACCOUNTS:
+Admin:
+[admin@admin.com](mailto:admin@admin.com) / password
+
+Customer:
+[customer@customer.com](mailto:customer@customer.com) / password
+
+---
+
+ROUTING (STRICT):
+Public:
+
+* /login
+* /register
+
+Admin:
+
+* /admin/users
+* /admin/cars
+* /admin/orders
+
+Customer:
+
+* /cars
+* /cars/:id
+* /orders
+* /orders/:id
+* /installments
+
+---
+
+AUTHORIZATION RULES:
+Guest:
+
+* Access login/register ONLY
+
+Customer:
+
+* Browse cars
+* Create orders
+* View own orders and installments ONLY
+
+Admin:
+
+* Access dashboard ONLY
+* Manage system data
+
+---
+
+ADMIN DASHBOARD (PROTECTED):
+
+1. USERS (READ ONLY)
+
+* List users
+* View user details
+  API:
+  GET /api/admin/users
+  GET /api/admin/users/{id}
+  Filters:
+  search, role, country, per_page
+
+2. CARS (FULL CRUD)
+   Fields:
+   name, brand, model, kilometers, price_per_day
+   API:
+   GET /api/admin/cars
+   POST /api/admin/cars
+   GET /api/admin/cars/{id}
+   PUT /api/admin/cars/{id}
+   DELETE /api/admin/cars/{id}
+   Filters:
+   search, brand, min_price, max_price, per_page
+
+3. ORDERS
+
+* List orders
+* View order details
+* Update payment status
+  IMPORTANT:
+* Admin CANNOT create orders
+* Admin MUST NOT delete orders
+  API:
+  GET /api/admin/orders
+  GET /api/admin/orders/{id}
+  PUT /api/admin/orders/{id}
+  Filters:
+  search, user_id, car_id, payment_type, payment_status, order_type, per_page
+
+---
+
+CUSTOMER FRONTEND:
+
+1. AUTH
+   POST /api/customer/register
+   POST /api/customer/login
+   POST /api/customer/logout
+   GET /api/customer/me
+
+2. BROWSE CARS
+
+* List cars
+* View details
+  API:
+  GET /api/customer/cars
+  GET /api/customer/cars/{id}
+  Filters:
+  search, brand, min_price, max_price, per_page
+
+3. CREATE ORDER FLOW:
+
+* Select car
+* Select delivery date
+* Select receiving date
+* System auto-calculates:
+
+  * days
+  * total price
+* Choose:
+
+  * payment_type: cash / visa / tamara
+  * order_type: full / installments
+    API:
+    POST /api/customer/orders
+
+4. MY ORDERS
+
+* List orders
+* View details
+  API:
+  GET /api/customer/orders
+  GET /api/customer/orders/{id}
+
+5. INSTALLMENTS
+
+* View installments
+* Pay installment
+  API:
+  GET /api/customer/installments
+  POST /api/customer/installments/{id}/pay
+
+---
+
+PAYMENT:
+
+* SIMULATED ONLY via API
+* NO real integration
+
+---
+
+BUSINESS LOGIC:
+DO NOT calculate anything manually.
+ONLY display values from backend:
+
+* days
+* total_price
+* payment_status
+* installments
+
+---
+
+UI/UX (MANDATORY):
+
+* Responsive (mobile + desktop)
+* Clean modern UI
+* Loading states (spinner/skeleton)
+* Error handling:
+
+  * validation errors
+  * network errors
+* Empty states:
+
+  * no data
+  * no results
+
+---
+
+ADDITIONAL FEATURES (MANDATORY):
+
+1. DARK MODE
+
+* Toggle light/dark
+
+2. MULTI-LANGUAGE (i18n)
+
+* English
+* Arabic
+
+---
+
+TECH REQUIREMENTS:
+
+* Angular (latest)
+* Reactive Forms ONLY
+* HTTP Interceptors:
+
+  * token handling
+  * error handling
+
+---
+
+TABLES:
+
+* Server-side pagination
+* Server-side filtering
+* Search input
+
+---
+
+FORMS:
+
+* Reactive forms
+* Inline validation
+* Disable submit if invalid
+* Handle backend validation errors
+
+---
+
+ARCHITECTURE:
+
+* Clean folder structure
+* Reusable components
+* Separation of concerns
+* API service layer
+
+---
+
+OUTPUT REQUIREMENT:
+
+Before coding:
+
+1. Analyze requirements
+2. Break into modules/pages
+3. Show full architecture plan
+
+Then implement step-by-step:
+
+* Auth
+* Admin
+* Customer
+* Shared components
+
+Do NOT jump steps.
+
+---
+
+FINAL RULE:
+Any missing requirement = FAILURE.
+Any extra feature = FAILURE.
+Follow EXACT specification ONLY.

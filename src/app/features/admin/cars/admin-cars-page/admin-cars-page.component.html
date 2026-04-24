@@ -1,0 +1,135 @@
+<app-page-shell [title]="'nav.admin.cars' | translate" [subtitle]="'admin.cars.subtitle' | translate">
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4 space-y-4">
+    <form [formGroup]="filtersForm" (ngSubmit)="applyFilters()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      <div class="space-y-2 min-w-0 w-full xl:max-w-[16rem] justify-self-start">
+        <label class="text-sm">{{ 'common.search' | translate }}</label>
+        <input pInputText formControlName="search" class="w-full" />
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.brand' | translate }}</label>
+        <input pInputText formControlName="brand" class="w-full" />
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.minPrice' | translate }}</label>
+        <p-inputNumber formControlName="min_price" [min]="0" [useGrouping]="false" class="w-full"></p-inputNumber>
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.maxPrice' | translate }}</label>
+        <p-inputNumber formControlName="max_price" [min]="0" [useGrouping]="false" class="w-full"></p-inputNumber>
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'common.perPage' | translate }}</label>
+        <p-inputNumber formControlName="per_page" [min]="1" [useGrouping]="false" class="w-full"></p-inputNumber>
+      </div>
+
+      <div class="sm:col-span-2 lg:col-span-3 xl:col-span-5 flex" [ngClass]="uiLang.language() === 'ar' ? 'justify-end' : 'justify-start'">
+        <button pButton type="submit" [label]="'common.apply' | translate" [loading]="loading()"></button>
+      </div>
+    </form>
+  </section>
+
+  <section class="flex justify-end">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-plus"
+      [label]="'admin.cars.create' | translate"
+      (click)="openCreateDialog()"
+    ></button>
+  </section>
+
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4">
+    <app-data-state [loading]="loading()" [error]="error()" [empty]="(result()?.data?.length ?? 0) === 0" emptyTextKey="common.noResults">
+      <p-table [value]="result()?.data ?? []" [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>{{ 'cars.name' | translate }}</th>
+            <th>{{ 'cars.brand' | translate }}</th>
+            <th>{{ 'cars.model' | translate }}</th>
+            <th>{{ 'cars.kilometers' | translate }}</th>
+            <th>{{ 'cars.pricePerDay' | translate }}</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{ car.name }}</td>
+            <td>{{ car.brand }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.kilometers }}</td>
+            <td>{{ car.price_per_day }}</td>
+            <td class="text-right whitespace-nowrap">
+              <a pButton size="small" severity="secondary" class="mr-1" [label]="'common.details' | translate" [routerLink]="['/admin/cars', car.id]"></a>
+              <button pButton type="button" size="small" severity="info" class="mr-1" [label]="'common.edit' | translate" (click)="startEdit(car.id)"></button>
+              <button pButton type="button" size="small" severity="danger" [label]="'common.delete' | translate" [loading]="deletingCarId() === car.id" (click)="confirmDeleteCar(car.id)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <app-pagination
+        [page]="result()?.current_page ?? 1"
+        [lastPage]="result()?.last_page ?? 1"
+        [disabled]="loading()"
+        (pageChange)="load($event)"
+      />
+    </app-data-state>
+  </section>
+
+  <p-dialog
+    [visible]="carDialogVisible()"
+    (visibleChange)="onCarDialogVisibleChange($event)"
+    [header]="editingCarId() ? ('admin.cars.edit' | translate) : ('admin.cars.create' | translate)"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: 'min(92vw, 760px)' }"
+    [breakpoints]="{ '960px': '90vw', '640px': '96vw' }"
+  >
+    <form [formGroup]="carForm" (ngSubmit)="submitCar()" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="space-y-2">
+        <label class="text-sm">{{ 'cars.name' | translate }}</label>
+        <input pInputText formControlName="name" class="w-full" />
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.name.touched && (carForm.controls.name.errors?.['required'] || carForm.controls.name.errors?.['whitespace'])">{{ 'cars.name' | translate }} {{ 'common.required' | translate }}</div>
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.name.errors?.['backend']">{{ carForm.controls.name.errors?.['backend'] }}</div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-sm">{{ 'cars.brand' | translate }}</label>
+        <input pInputText formControlName="brand" class="w-full" />
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.brand.touched && (carForm.controls.brand.errors?.['required'] || carForm.controls.brand.errors?.['whitespace'])">{{ 'cars.brand' | translate }} {{ 'common.required' | translate }}</div>
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.brand.errors?.['backend']">{{ carForm.controls.brand.errors?.['backend'] }}</div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-sm">{{ 'cars.model' | translate }}</label>
+        <input pInputText formControlName="model" class="w-full" />
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.model.touched && (carForm.controls.model.errors?.['required'] || carForm.controls.model.errors?.['whitespace'])">{{ 'cars.model' | translate }} {{ 'common.required' | translate }}</div>
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.model.errors?.['backend']">{{ carForm.controls.model.errors?.['backend'] }}</div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-sm">{{ 'cars.kilometers' | translate }}</label>
+        <p-inputNumber formControlName="kilometers" [min]="0" [useGrouping]="false" class="w-full"></p-inputNumber>
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.kilometers.touched && carForm.controls.kilometers.errors?.['required']">{{ 'cars.kilometers' | translate }} {{ 'common.required' | translate }}</div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-sm">{{ 'cars.pricePerDay' | translate }}</label>
+        <p-inputNumber formControlName="price_per_day" [min]="0" [useGrouping]="false" class="w-full"></p-inputNumber>
+        <div class="text-red-500 text-xs" *ngIf="carForm.controls.price_per_day.touched && carForm.controls.price_per_day.errors?.['required']">{{ 'cars.pricePerDay' | translate }} {{ 'common.required' | translate }}</div>
+      </div>
+
+      <div class="md:col-span-2 text-red-500 text-xs" *ngIf="carFormError()">{{ carFormError() }}</div>
+
+      <div class="md:col-span-2 flex flex-wrap justify-end gap-2 pt-1">
+        <button pButton type="button" severity="secondary" [label]="'common.cancel' | translate" (click)="closeCarDialog()"></button>
+        <button pButton type="submit" [loading]="carFormSubmitting()" [disabled]="carForm.invalid" [label]="editingCarId() ? ('common.update' | translate) : ('common.create' | translate)"></button>
+      </div>
+    </form>
+  </p-dialog>
+</app-page-shell>

@@ -1,0 +1,21 @@
+<div class="flex flex-wrap justify-end gap-2 mt-4" *ngIf="lastPage > 1">
+  <span class="text-xs text-slate-500 self-center me-1">
+    {{ page }} / {{ lastPage }}
+  </span>
+
+  <button pButton type="button" severity="secondary" size="small" (click)="prev()" [disabled]="disabled || page <= 1" [label]="'common.prev' | translate"></button>
+
+  <button
+    pButton
+    type="button"
+    size="small"
+    *ngFor="let p of pagesToShow()"
+    (click)="goTo(p)"
+    [disabled]="disabled"
+    [severity]="p === page ? 'primary' : 'secondary'"
+    [outlined]="p !== page"
+    [label]="p.toString()"
+  ></button>
+
+  <button pButton type="button" severity="secondary" size="small" (click)="next()" [disabled]="disabled || page >= lastPage" [label]="'common.next' | translate"></button>
+</div>

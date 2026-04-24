@@ -1,0 +1,57 @@
+<app-page-shell [title]="'admin.orders.details' | translate">
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4">
+    <app-data-state [loading]="loading()" [error]="error()" [empty]="!order()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-4">
+        <div><span class="text-slate-500">ID:</span> #{{ order()?.id }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.user' | translate }}:</span> #{{ order()?.user_id }} - {{ order()?.user?.name || '-' }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.car' | translate }}:</span> #{{ order()?.car_id }} - {{ order()?.car?.brand }} {{ order()?.car?.name }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.paymentType' | translate }}:</span> {{ order()?.payment_type }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.orderType' | translate }}:</span> {{ order()?.order_type }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.paymentStatus' | translate }}:</span> {{ order()?.payment_status }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.days' | translate }}:</span> {{ order()?.days }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.total' | translate }}:</span> {{ order()?.total_price }}</div>
+      </div>
+
+      <form [formGroup]="statusForm" (ngSubmit)="updatePaymentStatus()" class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 items-end mb-4">
+        <div class="space-y-2">
+          <label class="text-sm">{{ 'admin.orders.updateStatus' | translate }}</label>
+          <p-select
+            formControlName="payment_status"
+            [options]="updateStatusOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          ></p-select>
+        </div>
+
+        <button pButton type="submit" [loading]="statusUpdating()" [label]="'common.update' | translate"></button>
+      </form>
+
+      <p class="text-red-500 text-xs mb-4" *ngIf="statusError()">{{ statusError() }}</p>
+
+      <section *ngIf="(order()?.installments?.length ?? 0) > 0" class="mb-4">
+        <h3 class="text-base font-semibold mb-2">{{ 'nav.customer.installments' | translate }}</h3>
+        <p-table [value]="order()?.installments ?? []" [tableStyle]="{ 'min-width': '40rem' }" responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ 'installments.dueDate' | translate }}</th>
+              <th>{{ 'installments.amount' | translate }}</th>
+              <th>{{ 'installments.status' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>{{ item.due_date | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item.amount }}</td>
+              <td><span class="status-chip" [class]="'status-chip ' + item.status">{{ item.status }}</span></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </section>
+
+      <div>
+        <a pButton severity="secondary" routerLink="/admin/orders" [label]="'common.back' | translate"></a>
+      </div>
+    </app-data-state>
+  </section>
+</app-page-shell>

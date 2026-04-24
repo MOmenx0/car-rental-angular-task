@@ -1,0 +1,139 @@
+<app-page-shell [title]="'cars.details' | translate" [subtitle]="'customer.orderFlow.subtitle' | translate">
+  <app-data-state [loading]="loading()" [error]="error()" [empty]="!car()">
+    <section class="glass-panel rounded-2xl border border-slate-300/40 car-summary-card car-product-card">
+      <div class="car-product-layout">
+        <div class="car-image-wrap">
+          <img class="car-image" [src]="demoCarImage" [alt]="(car()?.brand || '') + ' ' + (car()?.name || '')" />
+        </div>
+
+        <div class="car-product-body">
+          <div class="car-summary-head">
+            <div class="space-y-1">
+              <p class="car-summary-kicker">{{ 'cars.details' | translate }}</p>
+              <h2 class="car-summary-title">{{ car()?.brand }} {{ car()?.name }}</h2>
+              <p class="car-summary-subtitle">{{ 'cars.model' | translate }}: {{ car()?.model }}</p>
+            </div>
+
+            <div class="car-price-pill">
+              <span class="car-price-label">{{ 'cars.pricePerDay' | translate }}</span>
+              <strong class="car-price-value">{{ car()?.price_per_day }}</strong>
+            </div>
+          </div>
+
+          <div class="car-meta-grid">
+            <article class="car-meta-item">
+              <p class="car-meta-label">{{ 'cars.name' | translate }}</p>
+              <p class="car-meta-value">{{ car()?.name }}</p>
+            </article>
+
+            <article class="car-meta-item">
+              <p class="car-meta-label">{{ 'cars.brand' | translate }}</p>
+              <p class="car-meta-value">{{ car()?.brand }}</p>
+            </article>
+
+            <article class="car-meta-item">
+              <p class="car-meta-label">{{ 'cars.model' | translate }}</p>
+              <p class="car-meta-value">{{ car()?.model }}</p>
+            </article>
+
+            <article class="car-meta-item">
+              <p class="car-meta-label">{{ 'cars.kilometers' | translate }}</p>
+              <p class="car-meta-value">{{ car()?.kilometers }}</p>
+            </article>
+          </div>
+
+          <div class="car-action-row">
+            <button pButton type="button" icon="pi pi-calendar-plus" [label]="'customer.order.bookCar' | translate" (click)="openOrderDialog()"></button>
+            <a pButton severity="secondary" [routerLink]="['/cars']" [label]="'common.back' | translate"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p-dialog
+      [visible]="orderDialogVisible()"
+      (visibleChange)="onOrderDialogVisibleChange($event)"
+      [header]="'customer.order.bookCar' | translate"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="false"
+      [style]="{ width: 'min(94vw, 610px)' }"
+      [contentStyle]="{ 'max-height': '78vh', overflow: 'auto' }"
+      [breakpoints]="{ '960px': '94vw', '640px': '96vw' }"
+    >
+      <div class="flex flex-wrap gap-2 mb-4 text-xs">
+        <span class="status-chip pending">1. {{ 'customer.orderFlow.stepDates' | translate }}</span>
+        <span class="status-chip pending">2. {{ 'customer.orderFlow.stepPayment' | translate }}</span>
+        <span class="status-chip pending">3. {{ 'customer.orderFlow.stepReview' | translate }}</span>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="createOrder()" class="grid grid-cols-1 gap-3">
+        <div class="space-y-2">
+          <label class="text-sm">{{ 'customer.order.deliveryDate' | translate }}</label>
+          <p-datepicker
+            formControlName="delivery_date"
+            dateFormat="yy-mm-dd"
+            dataType="string"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            class="w-full booking-datepicker"
+            inputStyleClass="booking-date-input"
+            panelStyleClass="booking-date-panel"
+          ></p-datepicker>
+          <div class="text-red-500 text-xs" *ngIf="form.controls.delivery_date.touched && form.controls.delivery_date.errors?.['required']">{{ 'customer.order.deliveryDate' | translate }} {{ 'common.required' | translate }}</div>
+          <div class="text-red-500 text-xs" *ngIf="form.controls.delivery_date.errors?.['backend']">{{ form.controls.delivery_date.errors?.['backend'] }}</div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm">{{ 'customer.order.receivingDate' | translate }}</label>
+          <p-datepicker
+            formControlName="receiving_date"
+            dateFormat="yy-mm-dd"
+            dataType="string"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            class="w-full booking-datepicker"
+            inputStyleClass="booking-date-input"
+            panelStyleClass="booking-date-panel"
+          ></p-datepicker>
+          <div class="text-red-500 text-xs" *ngIf="form.controls.receiving_date.touched && form.controls.receiving_date.errors?.['required']">{{ 'customer.order.receivingDate' | translate }} {{ 'common.required' | translate }}</div>
+          <div class="text-red-500 text-xs" *ngIf="form.controls.receiving_date.errors?.['backend']">{{ form.controls.receiving_date.errors?.['backend'] }}</div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm">{{ 'admin.orders.paymentType' | translate }}</label>
+          <p-select formControlName="payment_type" [options]="paymentOptions" optionLabel="label" optionValue="value" class="w-full"></p-select>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm">{{ 'admin.orders.orderType' | translate }}</label>
+          <p-select formControlName="order_type" [options]="orderTypeOptions" optionLabel="label" optionValue="value" class="w-full"></p-select>
+        </div>
+
+        <ng-container *ngIf="form.controls.order_type.value === 'installments'">
+          <div class="space-y-2">
+            <label class="text-sm">{{ 'customer.order.downPayment' | translate }}</label>
+            <p-inputNumber formControlName="down_payment" [min]="1" [useGrouping]="false" class="w-full"></p-inputNumber>
+            <div class="text-red-500 text-xs" *ngIf="form.controls.down_payment.touched && form.controls.down_payment.errors?.['required']">{{ 'customer.order.downPayment' | translate }} {{ 'common.required' | translate }}</div>
+            <div class="text-red-500 text-xs" *ngIf="form.controls.down_payment.touched && form.controls.down_payment.errors?.['min']">{{ 'common.mustBePositive' | translate }}</div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm">{{ 'customer.order.installmentCount' | translate }}</label>
+            <p-inputNumber formControlName="number_of_installments" [min]="1" [useGrouping]="false" class="w-full"></p-inputNumber>
+            <div class="text-red-500 text-xs" *ngIf="form.controls.number_of_installments.touched && form.controls.number_of_installments.errors?.['required']">{{ 'customer.order.installmentCount' | translate }} {{ 'common.required' | translate }}</div>
+            <div class="text-red-500 text-xs" *ngIf="form.controls.number_of_installments.touched && form.controls.number_of_installments.errors?.['min']">{{ 'common.mustBePositive' | translate }}</div>
+          </div>
+        </ng-container>
+
+        <div class="text-red-500 text-xs" *ngIf="form.errors?.['receivingBeforeDelivery']">{{ 'customer.order.invalidDates' | translate }}</div>
+        <div class="text-red-500 text-xs" *ngIf="submitError()">{{ submitError() }}</div>
+
+        <div class="flex flex-wrap justify-end gap-2 pt-1">
+          <button pButton type="button" severity="secondary" [label]="'common.cancel' | translate" (click)="closeOrderDialog()"></button>
+          <button pButton type="submit" [loading]="submitting()" [disabled]="form.invalid" [label]="'customer.order.bookCar' | translate"></button>
+        </div>
+      </form>
+    </p-dialog>
+  </app-data-state>
+</app-page-shell>

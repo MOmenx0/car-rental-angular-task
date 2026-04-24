@@ -1,0 +1,27 @@
+<div *ngIf="loading" class="glass-panel rounded-2xl p-4 border border-slate-300/40">
+  <div class="space-y-3" *ngFor="let _ of skeletonRowsArray()">
+    <p-skeleton width="35%" height="1rem"></p-skeleton>
+    <p-skeleton width="100%" height="0.9rem"></p-skeleton>
+    <p-skeleton width="70%" height="0.9rem"></p-skeleton>
+  </div>
+</div>
+
+<div *ngIf="!loading && error" class="glass-panel rounded-2xl p-4 border border-red-300/40 text-red-500">
+  <p>{{ error }}</p>
+  <div class="mt-3">
+    <ng-content select="[retry]" />
+  </div>
+</div>
+
+<div *ngIf="!loading && !error && empty" class="glass-panel rounded-2xl p-6 border border-slate-300/40 text-center">
+  <svg class="empty-illustration mx-auto" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+    <rect x="12" y="28" width="96" height="64" rx="14" fill="currentColor" opacity="0.16" />
+    <rect x="24" y="41" width="72" height="6" rx="3" fill="currentColor" opacity="0.22" />
+    <rect x="24" y="54" width="52" height="6" rx="3" fill="currentColor" opacity="0.18" />
+    <circle cx="38" cy="80" r="7" fill="currentColor" opacity="0.24" />
+    <circle cx="80" cy="80" r="7" fill="currentColor" opacity="0.24" />
+  </svg>
+  <p class="mt-3 text-sm text-slate-500 dark:text-slate-300">{{ emptyTextKey | translate }}</p>
+</div>
+
+<ng-content *ngIf="!loading && !error && !empty" />

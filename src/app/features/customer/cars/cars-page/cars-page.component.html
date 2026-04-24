@@ -1,0 +1,70 @@
+<app-page-shell [title]="'nav.customer.cars' | translate" [subtitle]="'customer.cars.subtitle' | translate">
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4 space-y-4">
+    <form [formGroup]="form" (ngSubmit)="submitFilters()" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 items-end">
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.search' | translate }}</label>
+        <input pInputText formControlName="search" class="w-full" />
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.brand' | translate }}</label>
+        <input pInputText formControlName="brand" class="w-full" />
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.minPrice' | translate }}</label>
+        <p-inputNumber formControlName="min_price" [min]="0" [useGrouping]="false" class="w-full"></p-inputNumber>
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.maxPrice' | translate }}</label>
+        <p-inputNumber formControlName="max_price" [min]="0" [useGrouping]="false" class="w-full"></p-inputNumber>
+      </div>
+
+      <div class="space-y-2 min-w-0">
+        <label class="text-sm">{{ 'cars.perPage' | translate }}</label>
+        <p-inputNumber formControlName="per_page" [min]="1" [useGrouping]="false" class="w-full"></p-inputNumber>
+      </div>
+
+      <div class="sm:col-span-2 lg:col-span-3 xl:col-span-5 flex pt-1">
+        <button pButton type="submit" [label]="'cars.apply' | translate" [loading]="loading()"></button>
+      </div>
+    </form>
+  </section>
+
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4">
+    <app-data-state [loading]="loading()" [error]="error()" [empty]="(result()?.data?.length ?? 0) === 0" emptyTextKey="common.noResults">
+      <p-table [value]="result()?.data ?? []" [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>{{ 'cars.name' | translate }}</th>
+            <th>{{ 'cars.brand' | translate }}</th>
+            <th>{{ 'cars.model' | translate }}</th>
+            <th>{{ 'cars.kilometers' | translate }}</th>
+            <th>{{ 'cars.pricePerDay' | translate }}</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{ car.name }}</td>
+            <td>{{ car.brand }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.kilometers }}</td>
+            <td>{{ car.price_per_day }}</td>
+            <td class="text-right">
+              <a pButton severity="secondary" size="small" [routerLink]="['/cars', car.id]" [label]="'cars.details' | translate"></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <app-pagination
+        [page]="result()?.current_page ?? 1"
+        [lastPage]="result()?.last_page ?? 1"
+        [disabled]="loading()"
+        (pageChange)="load($event)"
+      />
+    </app-data-state>
+  </section>
+</app-page-shell>

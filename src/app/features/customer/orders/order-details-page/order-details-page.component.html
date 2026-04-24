@@ -1,0 +1,41 @@
+<app-page-shell [title]="'nav.customer.orders' | translate" [subtitle]="'customer.orders.detailsSubtitle' | translate">
+  <app-data-state [loading]="loading()" [error]="error()" [empty]="!order()">
+    <section class="glass-panel rounded-2xl border border-slate-300/40 p-4 mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+        <div><span class="text-slate-500">ID:</span> #{{ order()?.id }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.car' | translate }}:</span> {{ order()?.car?.brand }} {{ order()?.car?.name }} ({{ order()?.car?.model }})</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.payment' | translate }}:</span> {{ order()?.payment_type }} / {{ order()?.order_type }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.paymentStatus' | translate }}:</span> {{ order()?.payment_status }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.days' | translate }}:</span> {{ order()?.days }}</div>
+        <div><span class="text-slate-500">{{ 'admin.orders.total' | translate }}:</span> {{ order()?.total_price }}</div>
+      </div>
+    </section>
+
+    <section class="glass-panel rounded-2xl border border-slate-300/40 p-4" *ngIf="(order()?.installments?.length ?? 0) > 0">
+      <h2 class="text-lg font-semibold mb-3">{{ 'nav.customer.installments' | translate }}</h2>
+
+      <p-table [value]="order()?.installments ?? []" [tableStyle]="{ 'min-width': '40rem' }" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>{{ 'installments.dueDate' | translate }}</th>
+            <th>{{ 'installments.amount' | translate }}</th>
+            <th>{{ 'installments.status' | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>#{{ item.id }}</td>
+            <td>{{ item.due_date | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ item.amount }}</td>
+            <td><span class="status-chip" [class]="'status-chip ' + item.status">{{ item.status }}</span></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </section>
+
+    <div class="mt-4">
+      <a pButton severity="secondary" routerLink="/orders" [label]="'common.back' | translate"></a>
+    </div>
+  </app-data-state>
+</app-page-shell>

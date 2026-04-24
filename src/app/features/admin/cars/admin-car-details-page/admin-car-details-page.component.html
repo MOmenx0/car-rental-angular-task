@@ -1,0 +1,18 @@
+<app-page-shell [title]="'admin.cars.details' | translate">
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4">
+    <app-data-state [loading]="loading()" [error]="error()" [empty]="!car()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+        <div><span class="text-slate-500">ID:</span> #{{ car()?.id }}</div>
+        <div><span class="text-slate-500">{{ 'cars.name' | translate }}:</span> {{ car()?.name }}</div>
+        <div><span class="text-slate-500">{{ 'cars.brand' | translate }}:</span> {{ car()?.brand }}</div>
+        <div><span class="text-slate-500">{{ 'cars.model' | translate }}:</span> {{ car()?.model }}</div>
+        <div><span class="text-slate-500">{{ 'cars.kilometers' | translate }}:</span> {{ car()?.kilometers }}</div>
+        <div><span class="text-slate-500">{{ 'cars.pricePerDay' | translate }}:</span> {{ car()?.price_per_day }}</div>
+      </div>
+
+      <div class="mt-4">
+        <a pButton severity="secondary" routerLink="/admin/cars" [label]="'common.back' | translate"></a>
+      </div>
+    </app-data-state>
+  </section>
+</app-page-shell>

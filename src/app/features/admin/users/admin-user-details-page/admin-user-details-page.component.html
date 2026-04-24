@@ -1,0 +1,19 @@
+<app-page-shell [title]="'admin.users.details' | translate">
+  <section class="glass-panel rounded-2xl border border-slate-300/40 p-4">
+    <app-data-state [loading]="loading()" [error]="error()" [empty]="!user()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+        <div><span class="text-slate-500">ID:</span> #{{ user()?.id }}</div>
+        <div><span class="text-slate-500">{{ 'auth.name' | translate }}:</span> {{ user()?.name }}</div>
+        <div><span class="text-slate-500">{{ 'auth.email' | translate }}:</span> {{ user()?.email }}</div>
+        <div><span class="text-slate-500">{{ 'admin.users.role' | translate }}:</span> {{ user()?.role }}</div>
+        <div><span class="text-slate-500">{{ 'admin.users.phone' | translate }}:</span> {{ user()?.phone || '-' }}</div>
+        <div><span class="text-slate-500">{{ 'auth.country' | translate }}:</span> {{ user()?.country || '-' }}</div>
+        <div><span class="text-slate-500">{{ 'admin.users.wallet' | translate }}:</span> {{ user()?.wallet }}</div>
+      </div>
+
+      <div class="mt-4">
+        <a pButton severity="secondary" routerLink="/admin/users" [label]="'common.back' | translate"></a>
+      </div>
+    </app-data-state>
+  </section>
+</app-page-shell>

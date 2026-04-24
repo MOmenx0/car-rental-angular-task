@@ -1,0 +1,80 @@
+<section class="min-h-[calc(100dvh-10rem)] flex items-center justify-center">
+  <div class="w-full max-w-5xl grid md:grid-cols-2 gap-4 items-stretch">
+    <div class="hidden md:block rounded-3xl overflow-hidden shadow-glass border border-slate-300/30">
+      <div
+        class="h-full min-h-[520px] bg-cover bg-center relative"
+        style="background-image:url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80')"
+      >
+        <div class="absolute inset-0 bg-slate-950/45"></div>
+        <div class="absolute bottom-0 p-6 text-white">
+          <p class="uppercase tracking-[0.2em] text-xs text-slate-200">AutoRent Premium</p>
+          <h2 class="text-2xl font-semibold mt-2">{{ 'auth.register' | translate }}</h2>
+          <p class="mt-2 text-sm text-slate-200">{{ 'auth.registerSubtitle' | translate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-panel rounded-3xl border border-slate-300/30 p-5 md:p-7 shadow-glass">
+      <h1 class="text-2xl font-semibold mb-2">{{ 'auth.register' | translate }}</h1>
+      <p class="text-sm text-slate-600 dark:text-slate-300 mb-6">
+        {{ 'auth.haveAccount' | translate }}
+        <a class="text-blue-600 dark:text-blue-300" routerLink="/login">{{ 'auth.login' | translate }}</a>
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm mb-2">{{ 'auth.name' | translate }}</label>
+          <input pInputText class="w-full" type="text" formControlName="name" autocomplete="name" />
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.name.touched && (form.controls.name.errors?.['required'] || form.controls.name.errors?.['whitespace'])">
+            {{ 'auth.name' | translate }} {{ 'common.required' | translate }}
+          </div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.name.errors?.['backend']">{{ form.controls.name.errors?.['backend'] }}</div>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-2">{{ 'auth.email' | translate }}</label>
+          <input pInputText class="w-full" type="email" formControlName="email" autocomplete="email" />
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.email.touched && (form.controls.email.errors?.['required'] || form.controls.email.errors?.['whitespace'])">
+            {{ 'auth.email' | translate }} {{ 'common.required' | translate }}
+          </div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.email.touched && form.controls.email.errors?.['email']">{{ 'common.invalidEmail' | translate }}</div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.email.errors?.['backend']">{{ form.controls.email.errors?.['backend'] }}</div>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-2">{{ 'auth.country' | translate }}</label>
+          <input pInputText class="w-full" type="text" formControlName="country" autocomplete="country-name" />
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.country.touched && (form.controls.country.errors?.['required'] || form.controls.country.errors?.['whitespace'])">
+            {{ 'auth.country' | translate }} {{ 'common.required' | translate }}
+          </div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.country.errors?.['backend']">{{ form.controls.country.errors?.['backend'] }}</div>
+        </div>
+
+        <div>
+          <label class="block text-sm mb-2">{{ 'auth.password' | translate }}</label>
+          <input pInputText class="w-full" type="password" formControlName="password" autocomplete="new-password" />
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.password.touched && (form.controls.password.errors?.['required'] || form.controls.password.errors?.['whitespace'])">
+            {{ 'auth.password' | translate }} {{ 'common.required' | translate }}
+          </div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.password.errors?.['backend']">{{ form.controls.password.errors?.['backend'] }}</div>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm mb-2">{{ 'auth.confirmPassword' | translate }}</label>
+          <input pInputText class="w-full" type="password" formControlName="password_confirmation" autocomplete="new-password" />
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.password_confirmation.touched && (form.controls.password_confirmation.errors?.['required'] || form.controls.password_confirmation.errors?.['whitespace'])">
+            {{ 'auth.confirmPassword' | translate }} {{ 'common.required' | translate }}
+          </div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.password_confirmation.errors?.['mismatch']">{{ 'common.passwordsMismatch' | translate }}</div>
+          <div class="text-red-500 text-xs mt-1" *ngIf="form.controls.password_confirmation.errors?.['backend']">{{ form.controls.password_confirmation.errors?.['backend'] }}</div>
+        </div>
+
+        <div class="text-red-500 text-xs md:col-span-2" *ngIf="formError()">{{ formError() }}</div>
+
+        <div class="md:col-span-2">
+          <button pButton type="submit" [loading]="isSubmitting()" [disabled]="form.invalid" class="w-full" [label]="'auth.register' | translate"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

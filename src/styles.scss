@@ -1,0 +1,178 @@
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
+
+:root {
+  --app-bg: #f4f6fb;
+  --app-panel: rgba(255, 255, 255, 0.78);
+  --app-border: rgba(148, 163, 184, 0.35);
+  --app-text: #0f172a;
+  --app-muted: #475569;
+  --app-accent: #0b3f8a;
+  --app-warn: #c2410c;
+  --app-field-bg: rgba(255, 255, 255, 0.92);
+  --app-field-border: rgba(148, 163, 184, 0.45);
+  --app-field-placeholder: #64748b;
+  --app-table-head-bg: #1f2937;
+  --app-table-head-text: #f8fafc;
+  --app-table-row-bg: rgba(255, 255, 255, 0.92);
+  --app-table-row-alt-bg: rgba(248, 250, 252, 0.9);
+  --app-table-row-hover-bg: rgba(241, 245, 249, 0.98);
+  --app-table-border: rgba(203, 213, 225, 0.9);
+}
+
+body.dark {
+  --app-bg: #060f20;
+  --app-panel: rgba(10, 22, 44, 0.82);
+  --app-border: rgba(100, 116, 139, 0.38);
+  --app-text: #e2e8f0;
+  --app-muted: #94a3b8;
+  --app-accent: #8db6ff;
+  --app-warn: #fdba74;
+  --app-field-bg: rgba(15, 23, 42, 0.88);
+  --app-field-border: rgba(100, 116, 139, 0.55);
+  --app-field-placeholder: #94a3b8;
+  --app-table-head-bg: rgba(15, 23, 42, 0.96);
+  --app-table-head-text: #e2e8f0;
+  --app-table-row-bg: rgba(2, 6, 23, 0.82);
+  --app-table-row-alt-bg: rgba(15, 23, 42, 0.82);
+  --app-table-row-hover-bg: rgba(30, 41, 59, 0.92);
+  --app-table-border: rgba(71, 85, 105, 0.7);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: var(--app-text);
+  background-color: var(--app-bg);
+  background-image:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--app-bg) 95%, rgba(87, 153, 221, 0.12) 5%) 0%,
+      color-mix(in srgb, var(--app-bg) 95%, rgba(231, 165, 86, 0.1) 5%) 100%
+    ),
+    radial-gradient(900px 420px at 12% -22%, rgba(87, 153, 221, 0.07), transparent 60%),
+    radial-gradient(900px 420px at 88% 122%, rgba(231, 165, 86, 0.06), transparent 60%);
+  background-attachment: fixed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.p-inputtext,
+.p-inputnumber-input,
+.p-datepicker-input,
+.p-password-input,
+.p-select,
+.p-multiselect {
+  background: var(--app-field-bg) !important;
+  border-color: var(--app-field-border) !important;
+  color: var(--app-text) !important;
+}
+
+.p-select .p-select-label {
+  color: var(--app-text) !important;
+}
+
+.p-inputtext::placeholder,
+.p-inputnumber-input::placeholder,
+.p-datepicker-input::placeholder,
+.p-password-input::placeholder {
+  color: var(--app-field-placeholder) !important;
+}
+
+.p-inputtext:enabled:focus,
+.p-inputnumber-input:enabled:focus,
+.p-datepicker-input:enabled:focus,
+.p-password-input:enabled:focus,
+.p-select.p-focus,
+.p-multiselect.p-focus {
+  border-color: color-mix(in srgb, var(--app-accent) 70%, var(--app-field-border)) !important;
+  box-shadow: 0 0 0 0.16rem color-mix(in srgb, var(--app-accent) 24%, transparent) !important;
+}
+
+.p-datatable .p-datatable-table,
+.p-datatable .p-datatable-table-container {
+  background: transparent !important;
+  color: var(--app-text) !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--app-table-head-bg) !important;
+  color: var(--app-table-head-text) !important;
+  border-color: var(--app-table-border) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  background: var(--app-table-row-bg) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-table-border) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:nth-child(even) > td {
+  background: var(--app-table-row-alt-bg) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover > td {
+  background: var(--app-table-row-hover-bg) !important;
+}
+
+.p-toast {
+  z-index: 1200;
+}
+
+.p-confirm-dialog .p-dialog-content {
+  line-height: 1.6;
+}
+
+.glass-panel {
+  background: var(--app-panel);
+  border: 1px solid var(--app-border);
+  backdrop-filter: blur(16px);
+}
+
+.empty-illustration {
+  width: 120px;
+  height: 120px;
+  color: color-mix(in srgb, var(--app-muted) 60%, transparent);
+}
+
+.status-chip {
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-chip.pending {
+  background: rgba(234, 179, 8, 0.2);
+  color: #a16207;
+}
+
+.status-chip.success,
+.status-chip.paid {
+  background: rgba(16, 185, 129, 0.2);
+  color: #047857;
+}
+
+.status-chip.failed {
+  background: rgba(239, 68, 68, 0.2);
+  color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.82rem;
+  }
+}

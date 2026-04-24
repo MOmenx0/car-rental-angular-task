@@ -1,0 +1,152 @@
+﻿{
+  "nav": {
+    "admin": {
+      "users": "Users",
+      "cars": "Cars",
+      "orders": "Orders"
+    },
+    "customer": {
+      "cars": "Cars",
+      "orders": "Orders",
+      "installments": "Installments"
+    }
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "country": "Country",
+    "confirmPassword": "Confirm password",
+    "submit": "Submit",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "invalidCredentials": "Invalid credentials.",
+    "loginSubtitle": "Access your premium driving dashboard in seconds.",
+    "registerSubtitle": "Create your account and start booking instantly."
+  },
+  "cars": {
+    "search": "Search",
+    "brand": "Brand",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "perPage": "Per page",
+    "apply": "Apply",
+    "details": "Details",
+    "name": "Name",
+    "model": "Model",
+    "kilometers": "Kilometers",
+    "pricePerDay": "Price/day"
+  },
+  "common": {
+    "loading": "Loading...",
+    "required": "is required",
+    "invalidEmail": "Email is invalid",
+    "passwordsMismatch": "Passwords do not match",
+    "noData": "No data.",
+    "noResults": "No results.",
+    "retry": "Retry",
+    "networkError": "Network error. Please try again.",
+    "search": "Search",
+    "perPage": "Per page",
+    "apply": "Apply",
+    "details": "Details",
+    "prev": "Prev",
+    "next": "Next",
+    "update": "Update",
+    "create": "Create",
+    "reset": "Reset",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "back": "Back",
+    "pay": "Pay",
+    "mustBePositive": "Value must be greater than zero"
+  },
+  "toast": {
+    "successTitle": "Success",
+    "errorTitle": "Error"
+  },
+  "admin": {
+    "users": {
+      "subtitle": "Browse and inspect user accounts with server-side filters.",
+      "role": "Role",
+      "country": "Country",
+      "wallet": "Wallet",
+      "details": "User details",
+      "phone": "Phone"
+    },
+    "cars": {
+      "subtitle": "Manage car inventory with complete CRUD operations.",
+      "edit": "Edit car",
+      "create": "Create car",
+      "new": "Create new",
+      "details": "Car details",
+      "created": "Car created successfully.",
+      "updated": "Car updated successfully.",
+      "deleted": "Car deleted successfully."
+    },
+    "orders": {
+      "subtitle": "Monitor all orders and update payment status.",
+      "userId": "User ID",
+      "carId": "Car ID",
+      "paymentType": "Payment type",
+      "paymentStatus": "Payment status",
+      "orderType": "Order type",
+      "user": "User",
+      "car": "Car",
+      "payment": "Payment",
+      "days": "Days",
+      "total": "Total",
+      "details": "Order details",
+      "updateStatus": "Update payment status",
+      "updated": "Payment status updated successfully."
+    }
+  },
+  "customer": {
+    "cars": {
+      "subtitle": "Explore available cars and start your booking flow."
+    },
+    "orders": {
+      "subtitle": "Track your orders and payment progress.",
+      "detailsSubtitle": "Order summary and installment schedule.",
+      "created": "Order created successfully."
+    },
+    "orderFlow": {
+      "subtitle": "Complete the order form and let backend calculate totals.",
+      "stepDates": "Select dates",
+      "stepPayment": "Choose payment",
+      "stepReview": "Review and submit"
+    },
+    "order": {
+      "deliveryDate": "Delivery date",
+      "receivingDate": "Receiving date",
+      "downPayment": "Down payment",
+      "installmentCount": "Number of installments",
+      "invalidDates": "Receiving date must be on or after delivery date.",
+      "bookCar": "Book Car",
+      "create": "Create order",
+      "backendNote": "Days and total price are always returned from backend calculations."
+    }
+  },
+  "installments": {
+    "subtitle": "Pay pending installments and track payment history.",
+    "order": "Order",
+    "dueDate": "Due date",
+    "amount": "Amount",
+    "status": "Status",
+    "paid": "Installment paid successfully."
+  },
+  "dialog": {
+    "deleteCarTitle": "Delete car",
+    "deleteCarMessage": "Are you sure you want to delete this car?",
+    "payInstallmentTitle": "Pay installment",
+    "payInstallmentMessage": "Do you want to pay this installment now?"
+  }
+}
